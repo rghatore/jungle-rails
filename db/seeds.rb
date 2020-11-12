@@ -76,7 +76,7 @@ cat1.products.create!({
 })
 
 cat1.products.create!({
-  name:  'Human Feet Shoes',
+  name:  'Weird Shoes',
   description: Faker::Hipster.paragraph(4),
   image: open_asset('apparel6.jpg'),
   quantity: 82,
