@@ -4,4 +4,8 @@ class Admin::CategoriesController < ApplicationController
     @categories = Category.all
     # @products_count = Product.where('category_id': @categories).count
   end
+
+  def new
+    @category = Category.new
+  end
 end
