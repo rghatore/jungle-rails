@@ -170,7 +170,7 @@ RSpec.describe User, type: :model do
     end
     
     it "returns instance of the user: case insensitive email match" do
-      email = 'Batman@JUSTICEleague.cM'
+      email = 'Batman@JUSTICEleague.coM'
       password = 'greatestdetective'
       user = User.authenticate_with_credentials(email, password)
       expect(user).to be_an_instance_of(User)
