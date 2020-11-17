@@ -9,7 +9,7 @@ RSpec.describe User, type: :model do
         @user = User.create(
           first_name: 'Michael',
           last_name: 'Schumacher',
-          email: 'michael@schumacher.com',
+          email: 'schumacher@formula1.com',
           password: 'greatest',
           password_confirmation: 'greatest'
         )
@@ -29,22 +29,12 @@ RSpec.describe User, type: :model do
           expect(User.count).to eq(original_count)
           # puts "user: #{@user.errors.full_messages}"
           expect(@user.errors.full_messages).to include(
-            'Password confirmation doesn\'t match Password')
+            'Password confirmation doesn\'t match Password'
+            )
       end
     end
     
     context 'one at a time' do
-      it 'does not save without first_name' do
-        @user = User.create(
-            # first_name: 'Michael',
-            last_name: 'Schumacher',
-            email: 'michael@schumacher.com',
-            password: 'greatest',
-            password_confirmation: 'goat'
-          )
-        expect(@user).to_not be_valid
-        expect(@user.errors.full_messages).to include('First name can\'t be blank')
-      end
       it 'does not save without first_name' do
         @user = User.create(
             last_name: 'Schumacher',
@@ -54,7 +44,8 @@ RSpec.describe User, type: :model do
           )
         expect(@user).to_not be_valid
         expect(@user.errors.full_messages).to include(
-          'First name can\'t be blank')
+          'First name can\'t be blank'
+          )
       end
       it 'does not save without last_name' do
         @user = User.create(
@@ -65,7 +56,8 @@ RSpec.describe User, type: :model do
           )
         expect(@user).to_not be_valid
         expect(@user.errors.full_messages).to include(
-          'Last name can\'t be blank')
+          'Last name can\'t be blank'
+          )
       end
       it 'does not save without email' do
         @user = User.create(
@@ -76,7 +68,8 @@ RSpec.describe User, type: :model do
           )
         expect(@user).to_not be_valid
         expect(@user.errors.full_messages).to include(
-          'Email can\'t be blank')
+          'Email can\'t be blank'
+          )
       end
       it 'does not save without password' do
         @user = User.create(
@@ -87,7 +80,8 @@ RSpec.describe User, type: :model do
           )
         expect(@user).to_not be_valid
         expect(@user.errors.full_messages).to include(
-          'Password can\'t be blank')
+          'Password can\'t be blank'
+          )
       end
       it 'does not save without password confirmation' do
         @user = User.create(
@@ -98,12 +92,32 @@ RSpec.describe User, type: :model do
           )
         expect(@user).to_not be_valid
         expect(@user.errors.full_messages).to include(
-          'Password confirmation can\'t be blank')
+          'Password confirmation can\'t be blank'
+          )
       end
     end
     context "email" do
-      it "must not exist in the database" do
-
+      before do
+        User.create(
+          first_name: 'Clark',
+          last_name: 'Kent',
+          email: 'Superman@JusticeLeague.COM',
+          password: 'ibelieveicanfly',
+          password_confirmation: 'ibelieveicanfly'
+        )
+      end
+      it "must be case insensitive and not exist in the database" do
+        @user = User.create(
+          first_name: 'Henry',
+          last_name: 'Cavill',
+          email: 'superman@justiceleague.com',
+          password: 'manofsteel',
+          password_confirmation: 'manofsteel'
+        )
+        expect(@user).to_not be_valid
+        expect(@user.errors.full_messages).to include(
+          'Email has already been taken'
+          )
       end
     end
   end
