@@ -22,7 +22,7 @@ RSpec.describe User, type: :model do
           @user = User.create(
             first_name: 'Michael',
             last_name: 'Schumacher',
-            email: 'michael@schumacher.com',
+            email: 'schumacher@formula1.com',
             password: 'greatest',
             password_confirmation: 'goat'
           )
@@ -30,6 +30,21 @@ RSpec.describe User, type: :model do
           # puts "user: #{@user.errors.full_messages}"
           expect(@user.errors.full_messages).to include(
             'Password confirmation doesn\'t match Password'
+            )
+      end
+      # test that minimum length is 8 characters for passwords
+      it 'does not save the user with passwords less than 8 characters' do
+        original_count = User.count
+          @user = User.create(
+            first_name: 'Michael',
+            last_name: 'Schumacher',
+            email: 'schumacher@formula1.com',
+            password: 'goat',
+            password_confirmation: 'goat'
+          )
+          expect(@user).to_not be_valid
+          expect(@user.errors.full_messages).to include(
+            /Password is too short/
             )
       end
     end
