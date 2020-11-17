@@ -161,5 +161,19 @@ RSpec.describe User, type: :model do
       user = User.authenticate_with_credentials(email, password)
       expect(user).to be_nil
     end
+    #edge case: user accidentally adds extra spaces in email
+    it "returns instance of the user even if email has whitespace" do
+      email = '  batman@justiceleague.com  '
+      password = 'greatestdetective'
+      user = User.authenticate_with_credentials(email, password)
+      expect(user).to be_an_instance_of(User)
+    end
+    
+    it "returns instance of the user: case insensitive email match" do
+      email = 'Batman@JUSTICEleague.cM'
+      password = 'greatestdetective'
+      user = User.authenticate_with_credentials(email, password)
+      expect(user).to be_an_instance_of(User)
+    end
   end
 end
