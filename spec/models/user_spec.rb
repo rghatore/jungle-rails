@@ -138,6 +138,28 @@ RSpec.describe User, type: :model do
   end
 
   describe '.authenticate_with_credentials' do
+    before do
+      User.create(
+        first_name: 'Bruce',
+        last_name: 'Wayne',
+        email: 'batman@justiceleague.com',
+        password: 'greatestdetective',
+        password_confirmation: 'greatestdetective'
+      )
+    end
+    # return instance of the user if authenticated or return nil
+    it "returns instance of the user if authenticated" do
+      email = 'batman@justiceleague.com'
+      password = 'greatestdetective'
+      user = User.authenticate_with_credentials(email, password)
+      expect(user).to be_an_instance_of(User)
+    end
 
+    it "returns nil if not authenticated" do
+      email = 'batman@justiceleague.com'
+      password = 'greatdetective'
+      user = User.authenticate_with_credentials(email, password)
+      expect(user).to be_nil
+    end
   end
 end
